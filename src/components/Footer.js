@@ -2,9 +2,17 @@ import React from 'react'
 
 export default function 
 Footer() {
+  const footerStyle={
+    position: "absolute",
+    width: "100%",
+    top: "100vh",
+    border: "2px solid green"
+  }
   return (
-    <div>
-        footer works
-    </div>
+    <footer className=" bg-dark text-light my-3 py-3" style={footerStyle}>
+        <p className="text-center">
+          Copyright &copy; MyTodolist.com
+        </p>
+    </footer>
   )
 }
