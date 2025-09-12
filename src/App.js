@@ -4,44 +4,84 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import TodoItem from './components/TodoItem';
 import Todos from './components/Todos';
-import React,{useState} from 'react';
+import AddTodo from './components/AddTodo';
+import About from './components/About';
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+
 
 let name = "Programmers"
 function App() {
+  let initTodo;
+  if (localStorage.getItem("todos") === null) {
+    initTodo = [];
+  }
+  else {
+    initTodo = JSON.parse(localStorage.getItem("todos"));
+  }
 
-  
-    const onDelete=(todo)=>{
-      console.log("I am deleted",todo);
-      setTodos(todos.filter((e)=>{
-        return e!=todo;
-      }));
+  const onDelete = (todo) => {
+    console.log("I am deleted", todo);
+    setTodos(todos.filter((e) => {
+      return e !== todo;
+    }));
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }
+
+  const addTodo = function (title, desc) {
+    let snum;
+    if (todos.length === 0 ? snum = 1 : snum = todos[todos.length - 1].sno + 1);
+
+    const myTodo = {
+      sno: snum,
+      title: title,
+      desc: desc,
+
     }
-  
-  const [todos,setTodos]=useState([{
-    sno: 1,
-    title: "Go to the market",
-    desc: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Repellendus, repellat."
-  },
-  {
-    sno: 2,
-    title: "Go to the mall",
-    desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quod minus accusamus earum!"
-  },
-  {
-    sno: 3,
-    title: "Go to the library",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, nesciunt hic. Optio, est. Iste, necessitatibus?"
-  }]);
+    setTodos([...todos, myTodo])
+    console.log("Todo added", myTodo);
+
+
+
+  }
+
+  const [todos, setTodos] = useState(initTodo);
+  useEffect(() => {
+
+    localStorage.setItem("todos", JSON.stringify(todos))
+
+
+  }, [todos])
+
 
   return (
     <>
-    
-     <Navbar  title="Todos List" searchBar={true} aboutText="About" />
-     
-     <Todos todos={todos} onDelete={onDelete}/>
-     
-     <Footer/>
-    
+     <Router>
+      <Navbar title="Todos List" searchBar={true} aboutText="About" />
+      <Routes>
+        <Route exact path="/" render={()=>{
+          return(
+          <>
+          <AddTodo addTodo={addTodo} />
+      <Todos todos={todos} onDelete={onDelete} />
+      </>
+      )
+        }}>
+         
+        </Route>
+        <Route exact  path="/about">
+          <About />
+        </Route>
+      </Routes>
+      
+
+      <Footer />
+    </Router>
     </>
   );
 }
