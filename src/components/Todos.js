@@ -9,10 +9,10 @@ export default function Todos(props) {
          props.todos.map((todo)=>{
           
            return (
-           <>
+           
            <TodoItem todo={todo} key={todo.sno} onDelete={props.onDelete}/>
-           <hr />
-           </>
+          
+           
            )
          })
         }

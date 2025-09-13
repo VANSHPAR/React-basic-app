@@ -10,17 +10,16 @@ import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 
 let name = "Programmers"
 function App() {
   let initTodo;
-  if (localStorage.getItem("todos") === null) {
-    initTodo = [];
-  }
+  if (localStorage.getItem("todos") === null) initTodo = [];
+
+
   else {
     initTodo = JSON.parse(localStorage.getItem("todos"));
   }
@@ -61,27 +60,30 @@ function App() {
 
   return (
     <>
-     <Router>
-      <Navbar title="Todos List" searchBar={true} aboutText="About" />
-      <Routes>
-        <Route exact path="/" render={()=>{
-          return(
-          <>
-          <AddTodo addTodo={addTodo} />
-      <Todos todos={todos} onDelete={onDelete} />
-      </>
-      )
-        }}>
-         
-        </Route>
-        <Route exact  path="/about">
-          <About />
-        </Route>
-      </Routes>
-      
+      <Router>
+        <Navbar title="Todos List" searchBar={true} aboutText="About" />
+        <Routes>
+          
+          <Route exact path="/" element={
 
-      <Footer />
-    </Router>
+
+            <>
+              <AddTodo addTodo={addTodo} />
+              <Todos todos={todos} onDelete={onDelete} />
+            </>
+
+          } />
+
+       
+          <Route exact path="/about" element={<About />} />
+
+
+
+        </Routes>
+
+
+        <Footer />
+      </Router>
     </>
   );
 }
